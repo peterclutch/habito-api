@@ -92,16 +92,6 @@ public class UserService {
 
     public User registerUser(AdminUserDTO userDTO, String password) {
         userRepository
-            .findOneByEmailIgnoreCase(userDTO.getLogin().toLowerCase())
-            .ifPresent(
-                existingUser -> {
-                    boolean removed = removeNonActivatedUser(existingUser);
-                    if (!removed) {
-                        throw new UsernameAlreadyUsedException();
-                    }
-                }
-            );
-        userRepository
             .findOneByEmailIgnoreCase(userDTO.getEmail())
             .ifPresent(
                 existingUser -> {
@@ -118,7 +108,7 @@ public class UserService {
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(userDTO.getFirstName());
         newUser.setLastName(userDTO.getLastName());
-        newUser.setLangKey(userDTO.getLangKey());
+        newUser.setLangKey(userDTO.getLangKey() != null ? userDTO.getLangKey() : "en");
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key

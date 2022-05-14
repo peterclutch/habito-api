@@ -113,7 +113,7 @@ public class UserResource {
         if (userDTO.getId() != null) {
             throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
             // Lowercase the user login before comparing with database
-        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getLogin().toLowerCase()).isPresent()) {
+        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail().toLowerCase()).isPresent()) {
             throw new LoginAlreadyUsedException();
         } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyUsedException();
@@ -145,7 +145,7 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new EmailAlreadyUsedException();
         }
-        existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getLogin().toLowerCase());
+        existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail().toLowerCase());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new LoginAlreadyUsedException();
         }
@@ -153,7 +153,7 @@ public class UserResource {
 
         return ResponseUtil.wrapOrNotFound(
             updatedUser,
-            HeaderUtil.createAlert(applicationName, "A user is updated with identifier " + userDTO.getLogin(), userDTO.getLogin())
+            HeaderUtil.createAlert(applicationName, "A user is updated with identifier " + userDTO.getEmail(), userDTO.getEmail())
         );
     }
 
