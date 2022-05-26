@@ -37,14 +37,11 @@ public class DomainUserDetailsService implements UserDetailsService {
         String lowercaseLogin = email.toLowerCase(Locale.ENGLISH);
         return userRepository
             .findOneWithAuthoritiesByEmailIgnoreCase(lowercaseLogin)
-            .map(user -> createSpringSecurityUser(lowercaseLogin, user))
+            .map(this::createSpringSecurityUser)
             .orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database"));
     }
 
-    private HabitoUser createSpringSecurityUser(String lowercaseLogin, User user) {
-        if (!user.isActivated()) {
-            throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
-        }
+    private HabitoUser createSpringSecurityUser(User user) {
         List<GrantedAuthority> grantedAuthorities = user
             .getAuthorities()
             .stream()
