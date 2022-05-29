@@ -4,6 +4,8 @@ import com.habito.platform.domain.Habit;
 import com.habito.platform.service.dto.HabitSimpleDto;
 import com.habito.platform.service.dto.HabitViewDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
     componentModel = "spring",
@@ -12,4 +14,8 @@ import org.mapstruct.Mapper;
 public interface HabitMapper extends AbstractEntityMapper<HabitSimpleDto, Habit> {
 
     HabitViewDto toViewDto(Habit entity);
+
+    @Mapping(target = "id", ignore = true)
+    void updateEntity(@MappingTarget Habit entity, HabitSimpleDto dto);
+
 }

@@ -1,6 +1,7 @@
 package com.habito.platform.web.rest;
 
 import com.habito.platform.domain.Habit;
+import com.habito.platform.exception.NotFoundException;
 import com.habito.platform.service.HabitService;
 import com.habito.platform.service.dto.HabitSimpleDto;
 import com.habito.platform.service.dto.HabitViewDto;
@@ -36,12 +37,23 @@ public class HabitResource {
     }
 
     @PostMapping("/habits")
-    public ResponseEntity<HabitSimpleDto> create(@Valid @RequestBody HabitSimpleDto dto) throws URISyntaxException {
+    public ResponseEntity<HabitViewDto> create(@Valid @RequestBody HabitSimpleDto dto) throws URISyntaxException {
         Habit savedEntity = habitService.create(habitMapper.toEntity(dto));
 
         return ResponseEntity
             .created(new URI("/api/habits/" + savedEntity.getId()))
-            .body(habitMapper.toDto(savedEntity));
+            .body(habitMapper.toViewDto(savedEntity));
+    }
+
+    @PutMapping("/habits/{id}")
+    public ResponseEntity<HabitViewDto> update(@PathVariable Long id, @Valid @RequestBody HabitSimpleDto dto) throws URISyntaxException {
+        Habit habit = habitService.findById(id).orElseThrow(() -> new NotFoundException(Habit.class, id));
+        habitMapper.updateEntity(habit, dto);
+        Habit savedEntity = habitService.save(habit);
+
+        return ResponseEntity
+                .created(new URI("/api/habits/" + savedEntity.getId()))
+                .body(habitMapper.toViewDto(savedEntity));
     }
 
     @DeleteMapping("/habits/{id}")
