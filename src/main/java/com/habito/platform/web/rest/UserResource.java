@@ -80,11 +80,8 @@ public class UserResource {
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
     private final UserService userService;
-
     private final UserRepository userRepository;
-
     private final MailService mailService;
 
     public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {

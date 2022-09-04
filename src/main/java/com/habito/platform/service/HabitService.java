@@ -25,11 +25,6 @@ public class HabitService {
         return habitRepository.findByIdAndUserId(id, userId);
     }
 
-    public Optional<Habit> findByCheckId(Long checkId) {
-        var userId = SecurityUtils.getCurrentUserIdWhenAuthorized();
-        return habitRepository.findByCheckIdAndUserId(checkId, userId);
-    }
-
     public List<Habit> findAll() {
         var userId = SecurityUtils.getCurrentUserIdWhenAuthorized();
         return habitRepository.findAllByUserId(userId);

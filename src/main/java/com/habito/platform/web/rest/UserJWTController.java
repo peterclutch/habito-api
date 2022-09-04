@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserJWTController {
 
     private final TokenProvider tokenProvider;
-
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {

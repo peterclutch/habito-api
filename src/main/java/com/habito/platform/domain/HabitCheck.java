@@ -18,5 +18,11 @@ public class HabitCheck {
 
     @NotNull
     @Column(name = "date", nullable = false)
-    LocalDate date;
+    private LocalDate date;
+
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "habit_id")
+    private Habit habit;
+
 }

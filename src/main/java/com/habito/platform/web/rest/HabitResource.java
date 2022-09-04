@@ -21,7 +21,6 @@ import java.util.List;
 public class HabitResource {
 
     private final HabitService habitService;
-
     private final HabitMapper habitMapper;
 
     @GetMapping("/habits")
